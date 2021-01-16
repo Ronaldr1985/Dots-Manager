@@ -1,0 +1,4 @@
+# Bash rc
+/bash/.bashrc ~/.bashrc
+
+/x/.xinitrc ~/.xinitrc # Means that the file .xinitrc is in a folder in the root of dots_location
