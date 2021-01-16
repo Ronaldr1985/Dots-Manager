@@ -2,6 +2,14 @@
 
 dots_location="~/.dotfiles"
 
+function symlink {
+  [[ "$2" ]] && link_source="$2"
+  [[ -z "$2" ]] && link_source="$1"
+  location=$(cat example-config | sed '/^#/d' | awk '{print $1}' | grep -i $1)
+  ln -s $link_source $location
+}
+
+
 push_all() {
 	echo "push_all function"
 }
