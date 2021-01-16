@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+function symlink {
+				# Write code to find where the file/package passed to this should belong in the syste
+}
