@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
 function symlink {
-				# Write code to find where the file/package passed to this should belong in the syste
+	location=$(cat example-config | sed '/^#/d' | awk '{print $2}' | grep -i $2)
+	ln -s $2 $location
 }

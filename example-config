@@ -1,0 +1,9 @@
+# Example config file for Dots-Manager
+
+# bashrc
+/bash/.bashrc ~/.bashrc 
+
+# Xinitrc
+/x/.xinitrc ~/.xinitrc
+
+
