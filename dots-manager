@@ -1,36 +1,6 @@
 #!/bin/bash
 
-while [ "$1" != "" ]; do
-	case $1 in
-		-a | --all )
-			push_all
-			exit
-			;;
-		-s | --single )
-			package_name="$1"
-			push_single $package_name
-			exit
-			;;
-		-f | --file )
-			file_name="$1"
-			push_file $file_name
-			exit
-			;;
-		-h | --help )
-			usage
-			exit
-			;;
-		-v | --version )
-			version
-			exit
-			;;
-		* )
-			usage
-			exit
-			;;
-	esac
-	shift
-done
+dots_location="~/.dotfiles"
 
 push_all() {
 	echo "push_all function"
@@ -57,3 +27,41 @@ version() {
 	echo "version function"
 	echo "Outputs version"
 }
+
+while [ "$1" != "" ]; do
+	case $1 in
+		--dots-location )
+			shift
+			dots_location="$1"
+			;;
+		-a | --all )
+			push_all
+			exit
+			;;
+		-s | --single )
+			shift
+			package_name="$1"
+			push_single $package_name
+			exit
+			;;
+		-f | --file )
+			shift
+			file_name="$1"
+			push_file $file_name
+			exit
+			;;
+		-h | --help )
+			usage
+			exit
+			;;
+		-v | --version )
+			version
+			exit
+			;;
+		* )
+			usage
+			exit 1
+			;;
+	esac
+	shift
+done
