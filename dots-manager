@@ -6,9 +6,10 @@ function symlink {
   [[ "$2" ]] && link_source="$2"
   [[ -z "$2" ]] && link_source="$1"
   location=$(cat example-config | sed '/^#/d' | awk '{print $1}' | grep -i $1)
+  echo $link_source
+  echo $location
   ln -s $link_source $location
 }
-
 
 push_all() {
 	echo "push_all function"
@@ -16,8 +17,9 @@ push_all() {
 
 push_single() {
 	package_name="$1"
-	echo "push_single function"
-	echo "Will push $package_name"
+	echo "Pushing $package_name..."
+	symlink $package_name
+	echo "Done"
 }
 
 push_file() {
