@@ -1,0 +1,31 @@
+#!/bin/sh
+
+dotfilesdir=$(pwd)
+home=$HOME
+
+rmlinks ()
+{
+	cd $dotfilesdir/home/ && find . -maxdepth 1 -type f -printf '$home/%f\n' | xargs -I{} rm {}
+	cd $dotfilesdir/home/.config/ && find . -maxdepth 1 -type f -printf '$home/.config/%f\n' | xargs -I{} rm {}
+	cd $dotfilesdir/home/.scripts/ && find . -maxdepth 1 -type f -printf '$home/.scripts/%f\n' | xargs -I{} rm {}
+	cd $dotfilesdir/home/.local/share/ && find . -maxdepth 1 -type f -printf '$home/.local/share/%f\n' | xargs -I{} rm {}
+	dfinrepo=$(cd $dotfilesdir/home/.restore/ && find . -maxdepth 1 -type f -printf '%f\n')
+}
+rm ~/.bash*
+echo "Removing old config files to avoid conflicts Cap"
+#rmlinks
+echo "Restoring config files that reside in ~, Cap"
+mkdir -p ~/.config ~/.local/share ~/.scripts ~/.restore
+find $dotfilesdir/home/  -maxdepth 1 -type f -exec ln -s {} ~/  \;
+find $dotfilesdir/home/.config  -maxdepth 1 -exec ln -s {} -t ~/.config/ \;
+find $dotfilesdir/home/.local/share  -maxdepth 1 -exec ln -s {} ~/.local/share/ \;
+find $dotfilesdir/home/.restore -maxdepth 1 -exec ln -s {} ~/.restore/ \;
+find $dotfilesdir/home/.scripts -maxdepth 1 -exec ln -s {} ~/.scripts/ \;
+rm -r ~/.config/.config # Not sure why a folder is created 
+
+echo "Just installin' Vim Plug Captain"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo "Just installed vim plug Cap"
+echo "System is almost ready for use Captain"
+
