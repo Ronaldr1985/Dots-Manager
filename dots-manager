@@ -1,0 +1,59 @@
+#!/bin/bash
+
+while [ "$1" != "" ]; do
+	case $1 in
+		-a | --all )
+			push_all
+			exit
+			;;
+		-s | --single )
+			package_name="$1"
+			push_single $package_name
+			exit
+			;;
+		-f | --file )
+			file_name="$1"
+			push_file $file_name
+			exit
+			;;
+		-h | --help )
+			usage
+			exit
+			;;
+		-v | --version )
+			version
+			exit
+			;;
+		* )
+			usage
+			exit
+			;;
+	esac
+	shift
+done
+
+push_all() {
+	echo "push_all function"
+}
+
+push_single() {
+	package_name="$1"
+	echo "push_single function"
+	echo "Will push $package_name"
+}
+
+push_file() {
+	file_name="$1"
+	echo "push_file function"
+	echo "Will push $file_name"
+}
+
+usage() {
+	echo "usage function"
+	echo "Outputs help for program"
+}
+
+version() {
+	echo "version function"
+	echo "Outputs version"
+}
