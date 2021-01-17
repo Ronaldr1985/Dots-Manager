@@ -2,11 +2,16 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"   )" >/dev/null 2>&1 && pwd)" # Location of the script
 dots_location="$SCRIPT_DIR"
+config_file="$SCRIPT_DIR/example-config"
 
 function symlink {
-  [[ "$2" ]] && link_files="$HOME/$2/*" && package_name=$1
-	[[ -z "$2" ]] && link_files="$dots_location/$(cat example-config  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
-  location=$(cat example-config | sed 's|~|'$HOME'|g' | sed '/^#/d' | grep -i $1 | awk '{print $2}')
+  if [ "$2" ]
+	then
+		link_files="$HOME/$2/*" && package_name=$1
+	else
+		link_files="$dots_location/$(cat $config_file  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
+	fi
+  location=$(cat $config_file | sed 's|~|'$HOME'|g' | sed '/^#/d' | grep -i $1 | awk '{print $2}')
   echo "Source: $link_files"
   echo "Location: $location"
   echo "ln -s $link_files $location" # Changed this to echo the link command whilst this is in development
