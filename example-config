@@ -1,4 +1,5 @@
 # Bash rc
 bash/.bashrc ~/.bashrc
+bash/.bash_profile ~/.bash_profile
 
 x/.xinitrc ~/.xinitrc # Means that the file .xinitrc is in a folder in the root of dots_location

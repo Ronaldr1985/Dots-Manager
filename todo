@@ -1,0 +1,5 @@
+# Simple Todo List
+
+1. Fix Symlink function
+2. Setup other arguments
+3. Have a setting in config file for packages/files that should be linked with high perms for stuff in /
