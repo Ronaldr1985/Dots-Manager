@@ -4,21 +4,45 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"   )" >/dev/null 2>&1 && pwd)" 
 dots_location="$SCRIPT_DIR"
 config_file="$SCRIPT_DIR/example-config"
 
+# Usage:
+## symlink all
+# 	pushes all the packages in config file
+## symlink bash
+# 	pushes all the bash config files
 function symlink {
   if [ "$2" ]
 	then
 		link_files="$HOME/$2/*" && package_name=$1
 	else
-		link_files="$dots_location/$(cat $config_file  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
+		if [ $1 == "all" ]
+		then
+			echo $(get_files) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
+			return 0
+		else
+			link_files="$dots_location/$(cat $config_file  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
+		fi
 	fi
-  location=$(cat $config_file | sed 's|~|'$HOME'|g' | sed '/^#/d' | grep -i $1 | awk '{print $2}')
-  echo "Source: $link_files"
-  echo "Location: $location"
-  echo "ln -s $link_files $location" # Changed this to echo the link command whilst this is in development
+	echo $(get_files $1) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
+	return 0
+}
+
+get_files() { # Added by hakmad
+	while IFS= read -r line; do
+    line=$(echo $line | sed '/^#/d' | grep -i "$1")
+
+    if [[ ! -z $line ]]; then
+        src=$(echo $line | cut -d " " -f 1)
+        dest=$(echo $line | cut -d " " -f 2)
+        echo "$src $dest"
+    else
+        :
+    fi
+
+	done < $config_file
 }
 
 push_all() {
-	echo "push_all function"
+	symlink all
 }
 
 push_single() {
