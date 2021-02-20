@@ -9,20 +9,23 @@ config_file="$SCRIPT_DIR/example-config"
 # 	pushes all the packages in config file
 ## symlink bash
 # 	pushes all the bash config files
+## symlink .bashrc
+# 	pushes the file .bashrc from bash package
 function symlink {
   if [ "$2" ]
 	then
 		link_files="$HOME/$2/*" && package_name=$1
 	else
-		if [ $1 == "all" ]
+		if [[ $1 == "all" ]]
 		then
 			echo $(get_files) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
 			return 0
 		else
-			link_files="$dots_location/$(cat $config_file  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
+			#link_files="$dots_location/$(cat $config_file  | sed '/^#/d' | grep -i bash/ | awk '{print $1}')"
+			echo $(get_files $1) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
 		fi
 	fi
-	echo $(get_files $1) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
+	#echo $(get_files $1) | awk -F" " '{ for (i=1; i<=NF; ++i) printf "%s%s", $i, (i%2?FS:RS) }' | sed 's/^/ln\ -s\ /' | bash 
 	return 0
 }
 
@@ -54,7 +57,7 @@ push_single() {
 
 push_file() {
 	file_name="$1"
-	echo "push_file function"
+	symlink
 	echo "Will push $file_name"
 }
 
